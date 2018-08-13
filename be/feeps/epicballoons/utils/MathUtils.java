@@ -19,7 +19,6 @@ import java.util.Random;
  * limitations under the License.
  *****************************************************************************
  */
-import java.util.Random;
 
 /**
  * Utility and fast math functions.
@@ -63,44 +62,44 @@ public final class MathUtils {
 
     static private class Sin {
 
-        static final float[] table = new float[SIN_COUNT];
+	static final float[] table = new float[SIN_COUNT];
 
-        static {
-            for (int i = 0; i < SIN_COUNT; i++) {
-                table[i] = (float) Math.sin((i + 0.5f) / SIN_COUNT * radFull);
-            }
-            for (int i = 0; i < 360; i += 90) {
-                table[(int) (i * degToIndex) & SIN_MASK] = (float) Math.sin(i * degreesToRadians);
-            }
-        }
+	static {
+	    for (int i = 0; i < SIN_COUNT; i++) {
+		table[i] = (float) Math.sin((i + 0.5f) / SIN_COUNT * radFull);
+	    }
+	    for (int i = 0; i < 360; i += 90) {
+		table[(int) (i * degToIndex) & SIN_MASK] = (float) Math.sin(i * degreesToRadians);
+	    }
+	}
     }
 
     /**
      * Returns the sine in radians from a lookup table.
      */
     static public final float sin(float radians) {
-        return Sin.table[(int) (radians * radToIndex) & SIN_MASK];
+	return Sin.table[(int) (radians * radToIndex) & SIN_MASK];
     }
 
     /**
      * Returns the cosine in radians from a lookup table.
      */
     static public final float cos(float radians) {
-        return Sin.table[(int) ((radians + PI / 2) * radToIndex) & SIN_MASK];
+	return Sin.table[(int) ((radians + PI / 2) * radToIndex) & SIN_MASK];
     }
 
     /**
      * Returns the sine in radians from a lookup table.
      */
     static public final float sinDeg(float degrees) {
-        return Sin.table[(int) (degrees * degToIndex) & SIN_MASK];
+	return Sin.table[(int) (degrees * degToIndex) & SIN_MASK];
     }
 
     /**
      * Returns the cosine in radians from a lookup table.
      */
     static public final float cosDeg(float degrees) {
-        return Sin.table[(int) ((degrees + 90) * degToIndex) & SIN_MASK];
+	return Sin.table[(int) ((degrees + 90) * degToIndex) & SIN_MASK];
     }
 
     // ---
@@ -113,169 +112,171 @@ public final class MathUtils {
 
     static private class Atan2 {
 
-        static final float[] table = new float[ATAN2_COUNT];
+	static final float[] table = new float[ATAN2_COUNT];
 
-        static {
-            for (int i = 0; i < ATAN2_DIM; i++) {
-                for (int j = 0; j < ATAN2_DIM; j++) {
-                    float x0 = (float) i / ATAN2_DIM;
-                    float y0 = (float) j / ATAN2_DIM;
-                    table[j * ATAN2_DIM + i] = (float) Math.atan2(y0, x0);
-                }
-            }
-        }
+	static {
+	    for (int i = 0; i < ATAN2_DIM; i++) {
+		for (int j = 0; j < ATAN2_DIM; j++) {
+		    float x0 = (float) i / ATAN2_DIM;
+		    float y0 = (float) j / ATAN2_DIM;
+		    table[j * ATAN2_DIM + i] = (float) Math.atan2(y0, x0);
+		}
+	    }
+	}
     }
 
     /**
      * Returns atan2 in radians from a lookup table.
      */
     static public final float atan2(float y, float x) {
-        float add, mul;
-        if (x < 0) {
-            if (y < 0) {
-                y = -y;
-                mul = 1;
-            } else {
-                mul = -1;
-            }
-            x = -x;
-            add = -PI;
-        } else {
-            if (y < 0) {
-                y = -y;
-                mul = -1;
-            } else {
-                mul = 1;
-            }
-            add = 0;
-        }
-        float invDiv = 1 / ((x < y ? y : x) * INV_ATAN2_DIM_MINUS_1);
+	float add, mul;
+	if (x < 0) {
+	    if (y < 0) {
+		y = -y;
+		mul = 1;
+	    } else {
+		mul = -1;
+	    }
+	    x = -x;
+	    add = -PI;
+	} else {
+	    if (y < 0) {
+		y = -y;
+		mul = -1;
+	    } else {
+		mul = 1;
+	    }
+	    add = 0;
+	}
+	float invDiv = 1 / ((x < y ? y : x) * INV_ATAN2_DIM_MINUS_1);
 
-        if (invDiv == Float.POSITIVE_INFINITY) {
-            return ((float) Math.atan2(y, x) + add) * mul;
-        }
+	if (invDiv == Float.POSITIVE_INFINITY) {
+	    return ((float) Math.atan2(y, x) + add) * mul;
+	}
 
-        int xi = (int) (x * invDiv);
-        int yi = (int) (y * invDiv);
-        return (Atan2.table[yi * ATAN2_DIM + xi] + add) * mul;
+	int xi = (int) (x * invDiv);
+	int yi = (int) (y * invDiv);
+	return (Atan2.table[yi * ATAN2_DIM + xi] + add) * mul;
     }
 
     // ---
     static public Random random = new Random();
 
-    public static boolean elapsed(long from, long to)
-    {
-        return System.currentTimeMillis() - from >= to;
+    public static boolean elapsed(long from, long to) {
+	return System.currentTimeMillis() - from >= to;
     }
 
-
     /**
-     * Returns a random number between 0 (inclusive) and the specified value (inclusive).
+     * Returns a random number between 0 (inclusive) and the specified value
+     * (inclusive).
      */
     static public final int random(int range) {
-        return random.nextInt(range + 1);
+	return random.nextInt(range + 1);
     }
 
     /**
      * Returns a random number between start (inclusive) and end (inclusive).
      */
     static public final int random(int start, int end) {
-        return start + random.nextInt(end - start + 1);
+	return start + random.nextInt(end - start + 1);
     }
 
     /**
      * Returns a random boolean value.
      */
     static public final boolean randomBoolean() {
-        return random.nextBoolean();
+	return random.nextBoolean();
     }
 
     /**
-     * Returns true if a random value between 0 and 1 is less than the specified value.
+     * Returns true if a random value between 0 and 1 is less than the specified
+     * value.
      */
     static public final boolean randomBoolean(float chance) {
-        return MathUtils.random() < chance;
+	return MathUtils.random() < chance;
     }
 
     /**
      * Returns random number between 0.0 (inclusive) and 1.0 (exclusive).
      */
     static public final float random() {
-        return random.nextFloat();
+	return random.nextFloat();
     }
 
     /**
-     * Returns a random number between 0 (inclusive) and the specified value (exclusive).
+     * Returns a random number between 0 (inclusive) and the specified value
+     * (exclusive).
      */
     static public final float random(float range) {
-        return random.nextFloat() * range;
+	return random.nextFloat() * range;
     }
 
     /**
      * Returns a random number between start (inclusive) and end (exclusive).
      */
     static public final float random(float start, float end) {
-        return start + random.nextFloat() * (end - start);
+	return start + random.nextFloat() * (end - start);
     }
 
     public static double randomDouble(double min, double max) {
-        return Math.random() < 0.5 ? ((1 - Math.random()) * (max - min) + min) : (Math.random() * (max - min) + min);
+	return Math.random() < 0.5 ? ((1 - Math.random()) * (max - min) + min) : (Math.random() * (max - min) + min);
     }
 
     public static byte toPackedByte(float var0) {
-        return (byte)((int)(var0 * 256.0F / 360.0F));
+	return (byte) ((int) (var0 * 256.0F / 360.0F));
     }
 
     // ---
     /**
-     * Returns the next power of two. Returns the specified value if the value is already a power of two.
+     * Returns the next power of two. Returns the specified value if the value is
+     * already a power of two.
      */
     static public int nextPowerOfTwo(int value) {
-        if (value == 0) {
-            return 1;
-        }
-        value--;
-        value |= value >> 1;
-        value |= value >> 2;
-        value |= value >> 4;
-        value |= value >> 8;
-        value |= value >> 16;
-        return value + 1;
+	if (value == 0) {
+	    return 1;
+	}
+	value--;
+	value |= value >> 1;
+	value |= value >> 2;
+	value |= value >> 4;
+	value |= value >> 8;
+	value |= value >> 16;
+	return value + 1;
     }
 
     static public boolean isPowerOfTwo(int value) {
-        return value != 0 && (value & value - 1) == 0;
+	return value != 0 && (value & value - 1) == 0;
     }
 
     // ---
     static public int clamp(int value, int min, int max) {
-        if (value < min) {
-            return min;
-        }
-        if (value > max) {
-            return max;
-        }
-        return value;
+	if (value < min) {
+	    return min;
+	}
+	if (value > max) {
+	    return max;
+	}
+	return value;
     }
 
     static public short clamp(short value, short min, short max) {
-        if (value < min) {
-            return min;
-        }
-        if (value > max) {
-            return max;
-        }
-        return value;
+	if (value < min) {
+	    return min;
+	}
+	if (value > max) {
+	    return max;
+	}
+	return value;
     }
 
     static public float clamp(float value, float min, float max) {
-        if (value < min) {
-            return min;
-        }
-        if (value > max) {
-            return max;
-        }
-        return value;
+	if (value < min) {
+	    return min;
+	}
+	if (value > max) {
+	    return max;
+	}
+	return value;
     }
 
     // ---
@@ -283,98 +284,112 @@ public final class MathUtils {
     static private final double BIG_ENOUGH_FLOOR = BIG_ENOUGH_INT;
     static private final double CEIL = 0.9999999;
     // static private final double BIG_ENOUGH_CEIL = NumberUtils
-// .longBitsToDouble(NumberUtils.doubleToLongBits(BIG_ENOUGH_INT + 1) - 1);
+    // .longBitsToDouble(NumberUtils.doubleToLongBits(BIG_ENOUGH_INT + 1) - 1);
     static private final double BIG_ENOUGH_CEIL = 16384.999999999996;
     static private final double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
 
     /**
-     * Returns the largest integer less than or equal to the specified float. This method will only properly floor floats from
-     * -(2^14) to (Float.MAX_VALUE - 2^14).
+     * Returns the largest integer less than or equal to the specified float. This
+     * method will only properly floor floats from -(2^14) to (Float.MAX_VALUE -
+     * 2^14).
      */
     static public int floor(float x) {
-        return (int) (x + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
+	return (int) (x + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
     }
 
     /**
-     * Returns the largest integer less than or equal to the specified float. This method will only properly floor floats that are
-     * positive. Note this method simply casts the float to int.
+     * Returns the largest integer less than or equal to the specified float. This
+     * method will only properly floor floats that are positive. Note this method
+     * simply casts the float to int.
      */
     static public int floorPositive(float x) {
-        return (int) x;
+	return (int) x;
     }
 
     /**
-     * Returns the smallest integer greater than or equal to the specified float. This method will only properly ceil floats from
-     * -(2^14) to (Float.MAX_VALUE - 2^14).
+     * Returns the smallest integer greater than or equal to the specified float.
+     * This method will only properly ceil floats from -(2^14) to (Float.MAX_VALUE -
+     * 2^14).
      */
     static public int ceil(float x) {
-        return (int) (x + BIG_ENOUGH_CEIL) - BIG_ENOUGH_INT;
+	return (int) (x + BIG_ENOUGH_CEIL) - BIG_ENOUGH_INT;
     }
 
     /**
-     * Returns the smallest integer greater than or equal to the specified float. This method will only properly ceil floats that
-     * are positive.
+     * Returns the smallest integer greater than or equal to the specified float.
+     * This method will only properly ceil floats that are positive.
      */
     static public int ceilPositive(float x) {
-        return (int) (x + CEIL);
+	return (int) (x + CEIL);
     }
 
     /**
-     * Returns the closest integer to the specified float. This method will only properly round floats from -(2^14) to
-     * (Float.MAX_VALUE - 2^14).
+     * Returns the closest integer to the specified float. This method will only
+     * properly round floats from -(2^14) to (Float.MAX_VALUE - 2^14).
      */
     static public int round(float x) {
-        return (int) (x + BIG_ENOUGH_ROUND) - BIG_ENOUGH_INT;
+	return (int) (x + BIG_ENOUGH_ROUND) - BIG_ENOUGH_INT;
     }
 
     /**
-     * Returns the closest integer to the specified float. This method will only properly round floats that are positive.
+     * Returns the closest integer to the specified float. This method will only
+     * properly round floats that are positive.
      */
     static public int roundPositive(float x) {
-        return (int) (x + 0.5f);
+	return (int) (x + 0.5f);
     }
 
     /**
-     * Returns true if the value is zero (using the default tolerance as upper bound)
+     * Returns true if the value is zero (using the default tolerance as upper
+     * bound)
      */
     static public boolean isZero(float value) {
-        return Math.abs(value) <= FLOAT_ROUNDING_ERROR;
+	return Math.abs(value) <= FLOAT_ROUNDING_ERROR;
     }
 
     /**
      * Returns true if the value is zero.
      *
-     * @param tolerance represent an upper bound below which the value is considered zero.
+     * @param tolerance
+     *                      represent an upper bound below which the value is
+     *                      considered zero.
      */
     static public boolean isZero(float value, float tolerance) {
-        return Math.abs(value) <= tolerance;
+	return Math.abs(value) <= tolerance;
     }
 
     /**
-     * Returns true if a is nearly equal to b. The function uses the default floating error tolerance.
+     * Returns true if a is nearly equal to b. The function uses the default
+     * floating error tolerance.
      *
-     * @param a the first value.
-     * @param b the second value.
+     * @param a
+     *              the first value.
+     * @param b
+     *              the second value.
      */
     static public boolean isEqual(float a, float b) {
-        return Math.abs(a - b) <= FLOAT_ROUNDING_ERROR;
+	return Math.abs(a - b) <= FLOAT_ROUNDING_ERROR;
     }
 
     /**
      * Returns true if a is nearly equal to b.
      *
-     * @param a the first value.
-     * @param b the second value.
-     * @param tolerance represent an upper bound below which the two values are considered equal.
+     * @param a
+     *                      the first value.
+     * @param b
+     *                      the second value.
+     * @param tolerance
+     *                      represent an upper bound below which the two values are
+     *                      considered equal.
      */
     static public boolean isEqual(float a, float b, float tolerance) {
-        return Math.abs(a - b) <= tolerance;
+	return Math.abs(a - b) <= tolerance;
     }
 
     /**
      * Compatiblity method for Double.isFinite from Java 1.7 and up
      */
     static public boolean isFinite(double value) {
-        return !Double.isNaN(value) && !Double.isInfinite(value);
+	return !Double.isNaN(value) && !Double.isInfinite(value);
     }
 }

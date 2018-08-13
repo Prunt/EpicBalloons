@@ -1,6 +1,7 @@
 name: EpicBalloons
 author: Feeps
-version: 1.0
+authors: [Prunt]
+version: 1.1
 main: be.feeps.epicballoons.Main
 description: Only Feeps know the reals balloons
 commands:

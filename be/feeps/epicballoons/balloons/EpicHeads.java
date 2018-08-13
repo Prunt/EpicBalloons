@@ -2,6 +2,8 @@ package be.feeps.epicballoons.balloons;
 
 import be.feeps.epicballoons.config.LangConfig;
 import be.feeps.epicballoons.utils.ItemsUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 
 public enum EpicHeads {
     Slime(       10, LangConfig.Msg.InventoryItemSlime.toString(),       "slime", new ItemStack(Material.SLIME_BLOCK)),
-    NetherWarts( 11, LangConfig.Msg.InventoryItemNetherWarts.toString(), "netherwarts", new ItemStack(Material.QUARTZ_ORE)),
+    NetherWarts( 11, LangConfig.Msg.InventoryItemNetherWarts.toString(), "netherwarts", "QUARTZ_ORE"),
     Sponge(      12, LangConfig.Msg.InventoryItemSponge.toString(),      "sponge", new ItemStack(Material.SPONGE)),
     Cactus(      13, LangConfig.Msg.InventoryItemCactus.toString(),      "cactus", new ItemStack(Material.CACTUS)),
     Glass(       14, LangConfig.Msg.InventoryItemGlass.toString(),       "glass", new ItemStack(Material.GLASS)),
-    Leaves(      15, LangConfig.Msg.InventoryItemLeaves.toString(),      "leaves", new ItemStack(Material.LEAVES)),
+    Leaves(      15, LangConfig.Msg.InventoryItemLeaves.toString(),      "leaves", "LEAVES"),
     TNT(         16, LangConfig.Msg.InventoryItemTNT.toString(),         "tnt", new ItemStack(Material.TNT)),
     Globe(       19, LangConfig.Msg.InventoryItemGlobe.toString(),       "globe", ItemsUtils.getCustomSkull("YjFkZDRmZTRhNDI5YWJkNjY1ZGZkYjNlMjEzMjFkNmVmYTZhNmI1ZTdiOTU2ZGI5YzVkNTljOWVmYWIyNSJ9fX0")),
     BlackBalloon(20, LangConfig.Msg.InventoryItemBlackBalloon.toString(),"blackballoon", ItemsUtils.getCustomSkull("OTk2NzU0ZDMzMDQzNTM0NWFhZTNhOWYwNjNjZmNhNDJhZmIyOGI3YzVjNGJiOWYyOTRlZDI1MjdkOTYxIn19fQ")),
@@ -39,6 +41,24 @@ public enum EpicHeads {
 
     EpicHeads(int slot, String name, String permission, ItemStack item){
         this.item = item;
+        this.name = name;
+        this.permission = permission;
+        this.slot = slot;
+    }
+
+    EpicHeads(int slot, String name, String permission, String item){
+	if (Bukkit.getServer().getVersion().contains("1.13")) {
+	    switch(item) {
+	    case "QUARTZ_ORE":
+		this.item = new ItemStack(Material.NETHER_QUARTZ_ORE);
+		break;
+	    case "LEAVES":
+		this.item = new ItemStack(Material.OAK_LEAVES);
+		break;
+	    }
+	} else {
+	    this.item = new ItemStack(Material.valueOf(item));
+	}
         this.name = name;
         this.permission = permission;
         this.slot = slot;
