@@ -16,11 +16,6 @@ import net.minecraft.server.v1_12_R1.DataConverterTypes;
 public class Registry {
     @SuppressWarnings("unchecked")
     public Registry() {
-	Schema sch = DataConverterRegistry.a().getSchema(15190);
-	TaggedChoice.TaggedChoiceType<?> choice = sch.findChoiceType(DataConverterTypes.n);
-	Map<Object, Type<?>> types = (Map<Object, Type<?>>) choice.types();
-	String key = "minecraft:EpicBalloon";
-	Type<?> value = types.get("minecraft:slime");
-	types.put(key, value);
+	// Got stuck with registering the new custom Entity
     }
 }
